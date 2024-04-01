@@ -12,10 +12,6 @@ let lastOp = '';
 
 //TODO fix issue where calculations after error messages return NaN
 
-//TODO implement decimal points
-
-
-
 const buttons = document.querySelectorAll('button');
 buttons.forEach((button) => {
     button.addEventListener('click', (e) => {
@@ -32,6 +28,10 @@ buttons.forEach((button) => {
                 firstNum += e.target.id;
             };
         } else if (e.target.classList.contains('operator')) {
+
+            if (!firstNum) {
+                return;
+            }
 
             if (op) {
                 chained = operate(op, parseFloat(firstNum), parseFloat(secNum));
@@ -93,6 +93,16 @@ buttons.forEach((button) => {
                     display.textContent = secNum;
                 }
             }
+        } else if (e.target.id === 'dot') {
+            if (!display.textContent.includes('.')) {
+                if (!secNum) {
+                    firstNum = firstNum + '.';
+                    display.textContent = firstNum;
+                } else {
+                    secNum = secNum + '.';
+                    display.textContent = secNum;
+                }
+            }
         }
     })
 });
@@ -141,3 +151,13 @@ function clear() {
     lastOp = '';
     display.textContent = '';
 }
+
+// TODO future keyboard functionality
+// document.addEventListener('keydown', (e) => {
+//     console.log(e.keyCode);
+
+//     if (e.keyCode === 13) { // Enter
+//         const button = document.querySelector('#calculate');
+//         button.click();
+//     }
+// });
